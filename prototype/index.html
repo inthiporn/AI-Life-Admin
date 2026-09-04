@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Life Admin — Interactive Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="statusbar-icons">●●● ▲ 🔋</span>
+  </div>
+  <div class="screens">
+
+    <!-- 1.1 Splash -->
+    <section class="screen active" id="screen-splash">
+      <div class="splash-content">
+        <div class="logo">🛡️</div>
+        <h1>AI Life Admin</h1>
+        <p class="subtitle">Less Admin, More Life</p>
+        <p class="subtitle-th">ผู้ช่วยจัดการชีวิตให้คุณมีเวลาสำคัญกว่า</p>
+      </div>
+      <button class="btn-primary" data-nav="welcome">เริ่มต้นใช้งาน</button>
+    </section>
+
+    <!-- 1.2 Welcome -->
+    <section class="screen" id="screen-welcome">
+      <button class="btn-back" data-nav="splash">←</button>
+      <div class="welcome-illustration">🏠📅🚗</div>
+      <h2>ให้ AI ช่วยจัดการเรื่องชีวิต<br>ครบ จบ ในแอปเดียว</h2>
+      <p class="muted">จบทุกเรื่อง เอกสาร บิล นัดหมาย เพียงแตะปุ่มเดียว</p>
+      <div class="dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+      <button class="btn-primary" data-nav="language">เริ่มต้นใช้งาน</button>
+    </section>
+
+    <!-- 1.3 Language -->
+    <section class="screen" id="screen-language">
+      <button class="btn-back" data-nav="welcome">←</button>
+      <h2>เลือกภาษา<br><span class="muted small">Choose Language</span></h2>
+      <div class="option-list" id="language-list">
+        <label class="option-row"><input type="radio" name="lang" value="th" checked><span>🇹🇭 ไทย</span></label>
+        <label class="option-row"><input type="radio" name="lang" value="en"><span>🇬🇧 English</span></label>
+        <label class="option-row"><input type="radio" name="lang" value="jp"><span>🇯🇵 日本語 Japanese</span></label>
+      </div>
+      <button class="btn-primary" data-nav="terms">ถัดไป</button>
+    </section>
+
+    <!-- 1.4 Terms & 1.5 Privacy combined -->
+    <section class="screen" id="screen-terms">
+      <button class="btn-back" data-nav="language">←</button>
+      <h2>ข้อกำหนดและเงื่อนไข<br><span class="muted small">Terms &amp; Conditions</span></h2>
+      <div class="checklist">
+        <label class="check-row"><input type="checkbox" class="consent-cb" checked><span>ฉันยอมรับเงื่อนไขการใช้บริการ</span></label>
+        <label class="check-row"><input type="checkbox" class="consent-cb" checked><span>ฉันยินยอมให้เก็บและใช้ข้อมูลส่วนบุคคลตาม PDPA</span></label>
+        <label class="check-row"><input type="checkbox" class="consent-cb"><span>รับข่าวสารและโปรโมชั่น (ไม่บังคับ)</span></label>
+      </div>
+      <button class="btn-primary" id="btn-accept-terms" data-nav="login">ยอมรับ</button>
+    </section>
+
+    <!-- 2.1 Login -->
+    <section class="screen" id="screen-login">
+      <button class="btn-back" data-nav="terms">←</button>
+      <div class="icon-badge">🛡️</div>
+      <h2>เข้าสู่ระบบ<br><span class="muted small">AI Life Admin</span></h2>
+      <div class="field">
+        <label>อีเมล หรือ เบอร์โทรศัพท์</label>
+        <input type="text" id="login-identifier" placeholder="pecky@gmail.com" value="pecky@gmail.com">
+      </div>
+      <div class="field">
+        <label>รหัสผ่าน</label>
+        <input type="password" id="login-password" placeholder="••••••••" value="password">
+      </div>
+      <label class="check-row small-check"><input type="checkbox" checked><span>จดจำฉันไว้</span></label>
+      <button class="btn-primary" id="btn-login">เข้าสู่ระบบ</button>
+      <p class="link-row muted">ลืมรหัสผ่าน? <a href="#" data-nav="forgot-password">สมัครสมาชิก</a></p>
+    </section>
+
+    <!-- 2.2 OTP -->
+    <section class="screen" id="screen-otp">
+      <button class="btn-back" data-nav="login">←</button>
+      <div class="icon-badge">📱</div>
+      <h2>ยืนยันตัวตน<br><span class="muted small">OTP</span></h2>
+      <p class="muted center">เราได้ส่งรหัส OTP ไปยัง<br>เบอร์ 089-xxx-1234</p>
+      <div class="otp-boxes">
+        <input maxlength="1" class="otp-box" value="4"><input maxlength="1" class="otp-box" value="8"><input maxlength="1" class="otp-box" value="2"><input maxlength="1" class="otp-box" value="9"><input maxlength="1" class="otp-box" value="1"><input maxlength="1" class="otp-box" value="3">
+      </div>
+      <p class="muted center">รหัสใช้ได้อีก <span id="otp-timer">00:42</span></p>
+      <p class="muted center small">ไม่ได้รับรหัส? <a href="#" id="btn-resend-otp">ส่งใหม่</a></p>
+      <button class="btn-primary" id="btn-verify-otp">ยืนยันรหัส OTP</button>
+    </section>
+
+    <!-- 2.3 Biometric Setup -->
+    <section class="screen" id="screen-biometric">
+      <button class="btn-back" data-nav="otp">←</button>
+      <div class="icon-badge">👆</div>
+      <h2>ตั้งค่าการเข้าสู่ระบบ<br><span class="muted small">ด้วย Biometrics</span></h2>
+      <p class="muted center">เพื่อความปลอดภัยและความสะดวก<br>คุณสามารถเข้าสู่ระบบด้วย Face ID / Touch ID<br>ในการเข้าสู่ระบบครั้งถัดไป</p>
+      <button class="btn-primary" id="btn-enable-biometric" data-nav="pin-setup">เปิดใช้งาน</button>
+      <button class="btn-text" data-nav="pin-setup">ข้ามไปก่อน</button>
+    </section>
+
+    <!-- 2.4 PIN Setup -->
+    <section class="screen" id="screen-pin-setup">
+      <button class="btn-back" data-nav="biometric">←</button>
+      <div class="icon-badge">🔒</div>
+      <h2>ตั้งรหัส PIN<br><span class="muted small">สำหรับยืนยันการทำรายการสำคัญ</span></h2>
+      <div class="pin-dots" id="pin-dots">
+        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+      </div>
+      <div class="keypad" id="pin-keypad">
+        <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+        <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+        <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+        <button class="ghost"></button><button data-key="0">0</button><button data-key="back">⌫</button>
+      </div>
+    </section>
+
+    <!-- 3.1 Home -->
+    <section class="screen" id="screen-home">
+      <div class="home-header">
+        <div>
+          <p class="muted">สวัสดีค่ะ 👋</p>
+          <h3>คุณเปิ้ล มีเรื่องต้องจัดการ <span id="home-pending-count">3</span> เรื่อง</h3>
+        </div>
+        <button class="icon-btn" data-nav="notification-settings">🔔</button>
+      </div>
+      <div class="bill-list" id="home-bill-list"></div>
+      <button class="btn-secondary" data-nav="services">+ เพิ่มธุระใหม่</button>
+      <nav class="bottom-nav">
+        <button class="nav-item active" data-nav="home"><span>🏠</span>หน้าหลัก</button>
+        <button class="nav-item" data-nav="scan"><span>📄</span>เอกสาร</button>
+        <button class="nav-item" data-nav="services"><span>🧾</span>บริการ</button>
+        <button class="nav-item" data-nav="account"><span>👤</span>โปรไฟล์</button>
+      </nav>
+    </section>
+
+    <!-- 3.2 Services -->
+    <section class="screen" id="screen-services">
+      <button class="btn-back" data-nav="home">←</button>
+      <h2>เลือกบริการ</h2>
+      <input type="text" class="search-box" placeholder="🔍 ค้นหาบริการ เช่น ไฟฟ้า, ประกัน...">
+      <div class="service-grid">
+        <button class="service-card" data-bill="electricity">⚡<span>ค่าไฟฟ้า</span></button>
+        <button class="service-card" data-bill="water">🚰<span>ค่าน้ำประปา</span></button>
+        <button class="service-card" data-bill="tax">🚗<span>ต่อภาษีรถ</span></button>
+        <button class="service-card" data-bill="social">🛡️<span>ประกันสังคม</span></button>
+        <button class="service-card" data-bill="health">❤️<span>ตรวจสุขภาพ</span></button>
+        <button class="service-card" data-nav="scan">📷<span>สแกนเอกสาร</span></button>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="home"><span>🏠</span>หน้าหลัก</button>
+        <button class="nav-item" data-nav="scan"><span>📄</span>เอกสาร</button>
+        <button class="nav-item active" data-nav="services"><span>🧾</span>บริการ</button>
+        <button class="nav-item" data-nav="account"><span>👤</span>โปรไฟล์</button>
+      </nav>
+    </section>
+
+    <!-- 3.3 Document Scan -->
+    <section class="screen" id="screen-scan">
+      <button class="btn-back" data-nav="services">←</button>
+      <h2>สแกนเอกสาร</h2>
+      <p class="muted center">วางเอกสารให้อยู่ในกรอบ</p>
+      <div class="scan-frame">
+        <div class="scan-doc-mock">
+          <p class="doc-title">บัตรประจำตัวประชาชน</p>
+          <p class="doc-sub">ประเทศไทย</p>
+          <p class="doc-line">นายสมชาย ใจดี</p>
+          <p class="doc-line">1 2345 67890 12</p>
+        </div>
+      </div>
+      <p class="muted center small">รองรับไฟล์ JPG, PNG, PDF</p>
+      <button class="btn-primary" id="btn-do-scan">ถ่ายรูป / สแกน</button>
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="home"><span>🏠</span>หน้าหลัก</button>
+        <button class="nav-item active" data-nav="scan"><span>📄</span>เอกสาร</button>
+        <button class="nav-item" data-nav="services"><span>🧾</span>บริการ</button>
+        <button class="nav-item" data-nav="account"><span>👤</span>โปรไฟล์</button>
+      </nav>
+    </section>
+
+    <!-- 3.4 AI Extract & Review -->
+    <section class="screen" id="screen-scan-review">
+      <button class="btn-back" data-nav="scan">←</button>
+      <div class="ai-badge">✅ AI ดึงข้อมูลจากเอกสารสำเร็จ<br><span class="muted small">โปรดตรวจสอบความถูกต้อง</span></div>
+      <h3>ข้อมูลจากบัตรประชาชน</h3>
+      <div class="field"><label>ชื่อ-นามสกุล</label><input type="text" value="นายสมชาย ใจดี"></div>
+      <div class="field"><label>เลขประจำตัวประชาชน</label><input type="text" value="1 2345 67890 12"></div>
+      <div class="field"><label>วันที่ออกบัตร</label><input type="text" value="10 ม.ค. 2538"></div>
+      <div class="field"><label>วันหมดอายุ</label><input type="text" value="10 ม.ค. 2569"></div>
+      <button class="btn-secondary" data-nav="scan">แก้ไขข้อมูล</button>
+      <button class="btn-primary" id="btn-confirm-scan">ยืนยันข้อมูล</button>
+    </section>
+
+    <!-- 4.1 Payment Confirmation -->
+    <section class="screen" id="screen-payment-confirm">
+      <button class="btn-back" data-nav="home">←</button>
+      <h2 id="pay-title">ยืนยันการชำระเงิน</h2>
+      <div class="bill-summary">
+        <p class="muted">เลขที่ผู้ใช้ไฟฟ้า</p>
+        <p class="bold" id="pay-ref">123456789</p>
+        <p class="muted">ยอดชำระ</p>
+        <p class="amount" id="pay-amount">1,245.00 บาท</p>
+        <p class="muted">กำหนดชำระ</p>
+        <p class="bold" id="pay-due">30 มิ.ย. 2569</p>
+      </div>
+      <p class="muted">ช่องทางชำระเงิน</p>
+      <div class="option-list">
+        <label class="option-row"><input type="radio" name="pm" value="promptpay" checked><span>💠 PromptPay (แนะนำ)</span></label>
+        <label class="option-row"><input type="radio" name="pm" value="card"><span>💳 บัตรเครดิต / เดบิต</span></label>
+        <label class="option-row"><input type="radio" name="pm" value="autodebit"><span>🏦 หักบัญชีอัตโนมัติ</span></label>
+      </div>
+      <button class="btn-primary" id="btn-pay">ชำระเงิน <span id="pay-btn-amount">1,245.00</span> บาท</button>
+    </section>
+
+    <!-- 4.2 Re-authenticate -->
+    <section class="screen" id="screen-reauth">
+      <div class="icon-badge">🔐</div>
+      <h2>ยืนยันตัวตนอีกครั้ง</h2>
+      <p class="muted center">เพื่อความปลอดภัย กรุณายืนยันตัวตนก่อนทำรายการ</p>
+      <div class="reauth-options">
+        <button class="reauth-btn" data-nav="processing"><span>😊</span>Face ID</button>
+        <button class="reauth-btn" data-nav="processing"><span>🔢</span>รหัส PIN</button>
+      </div>
+      <button class="btn-primary" id="btn-use-faceid" data-nav="processing">ใช้ Face ID</button>
+      <button class="btn-text" data-nav="pin-verify-reauth">กรอกรหัส PIN</button>
+    </section>
+
+    <!-- 4.3 Processing -->
+    <section class="screen" id="screen-processing">
+      <div class="spinner"></div>
+      <h2>AI กำลังดำเนินการ</h2>
+      <div class="checklist plain">
+        <p>✅ ตรวจสอบข้อมูล</p>
+        <p>✅ ดำเนินการชำระเงิน</p>
+        <p id="processing-step3">⏳ รอผลการยืนยัน</p>
+        <p id="processing-step4">⏳ บันทึกรายการ</p>
+      </div>
+    </section>
+
+    <!-- 4.4 Success -->
+    <section class="screen" id="screen-success">
+      <div class="success-icon">✅</div>
+      <h2>สำเร็จแล้ว!</h2>
+      <p class="muted center" id="success-desc">ชำระค่าไฟฟ้าเรียบร้อย<br><span class="bold" id="success-amount">1,245.00 บาท</span></p>
+      <div class="bill-summary">
+        <p class="muted">วันที่ทำรายการ</p>
+        <p class="bold" id="success-date">15 มิ.ย. 2568 10:24 น.</p>
+        <p class="muted">เลขที่อ้างอิง</p>
+        <p class="bold" id="success-txid">TX2025061500001</p>
+      </div>
+      <button class="btn-secondary">ดูใบเสร็จรับเงิน</button>
+      <button class="btn-primary" data-nav="home">กลับหน้าหลัก</button>
+    </section>
+
+    <!-- Account menu -->
+    <section class="screen" id="screen-account">
+      <h2>โปรไฟล์ของฉัน</h2>
+      <div class="account-header">
+        <div class="avatar">🧑</div>
+        <div><p class="bold">คุณเปิ้ล</p><p class="muted small">pecky@gmail.com</p></div>
+      </div>
+      <div class="menu-list">
+        <button class="menu-row" data-nav="security-settings"><span>🛡️ ตั้งค่าความปลอดภัย</span><span>›</span></button>
+        <button class="menu-row" data-nav="sessions"><span>💻 อุปกรณ์ที่เข้าสู่ระบบ</span><span>›</span></button>
+        <button class="menu-row" data-nav="notification-settings"><span>🔔 การแจ้งเตือน</span><span>›</span></button>
+        <button class="menu-row" data-nav="privacy"><span>📄 ข้อมูลและความเป็นส่วนตัว</span><span>›</span></button>
+        <button class="menu-row" data-nav="help"><span>❓ ช่วยเหลือ</span><span>›</span></button>
+        <button class="menu-row danger" data-nav="login"><span>🚪 ออกจากระบบ</span><span>›</span></button>
+      </div>
+      <nav class="bottom-nav">
+        <button class="nav-item" data-nav="home"><span>🏠</span>หน้าหลัก</button>
+        <button class="nav-item" data-nav="scan"><span>📄</span>เอกสาร</button>
+        <button class="nav-item" data-nav="services"><span>🧾</span>บริการ</button>
+        <button class="nav-item active" data-nav="account"><span>👤</span>โปรไฟล์</button>
+      </nav>
+    </section>
+
+    <!-- 5.3 Security Settings -->
+    <section class="screen" id="screen-security-settings">
+      <button class="btn-back" data-nav="account">←</button>
+      <h2>ตั้งค่าความปลอดภัย</h2>
+      <div class="menu-list">
+        <button class="menu-row" data-nav="forgot-password"><span>🔑 เปลี่ยนรหัสผ่าน</span><span>›</span></button>
+        <div class="menu-row toggle-row"><span>👆 Face ID / Touch ID</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+        <button class="menu-row" data-nav="pin-setup"><span>🔒 เปลี่ยนรหัส PIN</span><span>›</span></button>
+        <div class="menu-row toggle-row"><span>🔔 แจ้งเตือนเมื่อมีการเข้าสู่ระบบใหม่</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+      </div>
+    </section>
+
+    <!-- 5.2 Active Sessions -->
+    <section class="screen" id="screen-sessions">
+      <button class="btn-back" data-nav="account">←</button>
+      <h2>อุปกรณ์ที่เข้าสู่ระบบ</h2>
+      <div class="session-card">
+        <p class="bold">iPhone 16 (iOS 18) <span class="badge">อุปกรณ์นี้</span></p>
+        <p class="muted small">Bangkok, Thailand · 15 มิ.ย. 2568 10:24 น.</p>
+      </div>
+      <div class="session-card">
+        <p class="bold">MacBook Pro</p>
+        <p class="muted small">Bangkok, Thailand · 12 มิ.ย. 2568 09:15 น.</p>
+        <button class="btn-text danger">ออกจากระบบอุปกรณ์นี้</button>
+      </div>
+    </section>
+
+    <!-- 5.5 Notification Preference -->
+    <section class="screen" id="screen-notification-settings">
+      <button class="btn-back" data-nav="account">←</button>
+      <h2>ตั้งค่าการแจ้งเตือน</h2>
+      <div class="menu-list">
+        <div class="menu-row toggle-row"><span>แจ้งเตือนบิลใกล้ครบกำหนด</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="menu-row toggle-row"><span>แจ้งเตือนการชำระเงินสำเร็จ</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="menu-row toggle-row"><span>แจ้งเตือนความปลอดภัยบัญชี</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+        <div class="menu-row toggle-row"><span>ข่าวสารและโปรโมชั่น</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+      </div>
+    </section>
+
+    <!-- 5.6 Data & Privacy -->
+    <section class="screen" id="screen-privacy">
+      <button class="btn-back" data-nav="account">←</button>
+      <h2>ข้อมูลและความเป็นส่วนตัว</h2>
+      <div class="menu-list">
+        <button class="menu-row"><span>แก้ไขข้อมูลผู้ใช้งาน</span><span>›</span></button>
+        <button class="menu-row"><span>แก้ไขความยินยอม (Consent)</span><span>›</span></button>
+        <button class="menu-row"><span>ดาวน์โหลดข้อมูลของฉัน</span><span>›</span></button>
+        <button class="menu-row danger"><span>ลบบัญชีผู้ใช้งาน</span><span>›</span></button>
+      </div>
+    </section>
+
+    <!-- 5.7 Help -->
+    <section class="screen" id="screen-help">
+      <button class="btn-back" data-nav="account">←</button>
+      <h2>ช่วยเหลือ</h2>
+      <div class="menu-list">
+        <button class="menu-row"><span>❓ คำถามที่พบบ่อย (FAQ)</span><span>›</span></button>
+        <button class="menu-row"><span>💬 ติดต่อเรา</span><span>›</span></button>
+        <button class="menu-row"><span>📜 เงื่อนไขการใช้งาน</span><span>›</span></button>
+      </div>
+    </section>
+
+    <!-- 5.1 Forgot password -->
+    <section class="screen" id="screen-forgot-password">
+      <button class="btn-back" data-nav="login">←</button>
+      <div class="icon-badge">🔑</div>
+      <h2>ลืมรหัสผ่าน?</h2>
+      <p class="muted center">กรุณาใส่อีเมลหรือเบอร์โทรศัพท์<br>เพื่อรับรหัสยืนยัน</p>
+      <div class="field"><input type="text" placeholder="อีเมล หรือ เบอร์โทรศัพท์"></div>
+      <button class="btn-primary" data-nav="otp">ส่งรหัสยืนยัน</button>
+    </section>
+
+    <!-- PIN verify for reauth (separate simple screen) -->
+    <section class="screen" id="screen-pin-verify-reauth">
+      <button class="btn-back" data-nav="reauth">←</button>
+      <div class="icon-badge">🔒</div>
+      <h2>กรอกรหัส PIN</h2>
+      <div class="pin-dots" id="pin-dots-reauth">
+        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+        <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+      </div>
+      <div class="keypad" id="pin-keypad-reauth">
+        <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+        <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+        <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+        <button class="ghost"></button><button data-key="0">0</button><button data-key="back">⌫</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="prototype-note">
+  <strong>AI Life Admin — Interactive Prototype</strong><br>
+  UI-only clickable prototype (mock data, no real Firebase backend) — ตาม docs/tech-spec.md
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

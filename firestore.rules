@@ -1,0 +1,44 @@
+rules_version = '2';
+
+// Mirrors docs/database-schema.md §5 — ownership-based access control.
+// Financial data (bills.status=paid, transactions) is writable ONLY by
+// Cloud Functions using the Admin SDK, which bypasses these rules entirely.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+      allow read, update: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId;
+
+      match /{subcollection}/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    match /service_categories/{categoryId} {
+      allow read: if request.auth != null;
+      allow write: if false; // managed via Admin SDK / Firebase Console only
+    }
+
+    match /documents/{documentId} {
+      allow read: if request.auth != null && resource.data.user_id == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.user_id == request.auth.uid;
+      allow update, delete: if false; // extracted_data written only by scanDocument Cloud Function
+    }
+
+    match /bills/{billId} {
+      allow read: if request.auth != null && resource.data.user_id == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.user_id == request.auth.uid;
+      // Client may edit their own pending bill, but can never mark it paid directly.
+      allow update: if request.auth != null
+                    && resource.data.user_id == request.auth.uid
+                    && request.resource.data.status != 'paid';
+      allow delete: if false;
+    }
+
+    match /transactions/{transactionId} {
+      allow read: if request.auth != null && resource.data.user_id == request.auth.uid;
+      allow write: if false; // Cloud Functions (Admin SDK) only
+    }
+  }
+}
