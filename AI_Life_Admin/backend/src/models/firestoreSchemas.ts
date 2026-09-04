@@ -56,7 +56,9 @@ export interface BillDoc {
   reference_number?: string | null;
   amount: number;
   due_date: Timestamp;
-  status: "pending" | "processing" | "paid" | "overdue" | "cancelled";
+  // "appointment" is a non-monetary reminder (e.g. a health checkup) rather
+  // than something payable — amount is 0 and it's excluded from payment flows.
+  status: "pending" | "processing" | "paid" | "overdue" | "cancelled" | "appointment";
   created_at: Timestamp;
   updated_at: Timestamp;
 }

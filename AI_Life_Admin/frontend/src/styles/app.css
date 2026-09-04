@@ -262,6 +262,7 @@ h3 { font-size: 16px; font-weight: 600; margin-top: 4px; }
 .bill-card .bill-info { flex: 1; }
 .bill-card .bill-name { font-weight: 600; font-size: 14px; }
 .bill-card .bill-due { color: var(--muted); font-size: 12px; }
+.bill-card .bill-due.overdue { color: var(--danger); font-weight: 600; }
 .bill-card .bill-amount { font-weight: 700; font-size: 14px; color: var(--primary-dark); }
 .bill-card.paid { opacity: 0.55; }
 .bill-card.paid .bill-amount { color: var(--success); }

@@ -6,17 +6,14 @@ import { db } from "../services/firebaseClient";
 // this is the user_id backend/scripts/seedDemoBills.ts seeded real bills under.
 const DEMO_USER_ID = "demo-user";
 
-// The health-checkup card is a reminder/appointment, not a payable bill — the
-// backend schema's BillDoc.status has no "appointment" value, so this stays
-// local-only rather than being seeded into Firestore alongside real bills.
-const HEALTH_APPOINTMENT_BILL = { id: "bill_health_appt", category: "health_checkup", ref: "-", due: "20 พ.ย. 2569", amount: 0, status: "appointment" };
-
 // Falls back to this if Firestore isn't reachable (offline, rules, missing .env) —
-// same shape as backend/scripts/seedDemoBills.ts.
+// same shape as backend/scripts/seedDemoBills.ts. "appointment" is a non-monetary
+// reminder (e.g. a health checkup), not a payable bill — see BillDoc.status in
+// backend/src/models/firestoreSchemas.ts.
 const FALLBACK_BILLS = [
   { id: "bill1", category: "electricity", ref: "123456789", due: "30 มิ.ย. 2569", amount: 1245.0, status: "pending" },
   { id: "bill2", category: "water", ref: "987654321", due: "15 ส.ค. 2569", amount: 320.5, status: "pending" },
-  HEALTH_APPOINTMENT_BILL,
+  { id: "bill3", category: "health_checkup", ref: "-", due: "20 พ.ย. 2569", amount: 0, status: "appointment" },
 ];
 
 // Falls back to this if Firestore isn't reachable — matches the 5 documents
@@ -84,7 +81,7 @@ export function AppStateProvider({ children }) {
             status: data.status,
           };
         });
-        setBills([...docs, HEALTH_APPOINTMENT_BILL]);
+        setBills(docs);
       })
       .catch(() => {
         // Firestore unreachable (offline, rules, missing .env) — keep the static fallback.
@@ -100,9 +97,18 @@ export function AppStateProvider({ children }) {
     return categories.find((c) => c.id === categoryId) || { id: categoryId, icon: "🧾", name: "บริการ" };
   }
 
+  // For a specific, already-known bill (e.g. tapping a card on Home) — unambiguous
+  // even when multiple bills share the same category (e.g. two electricity bills).
+  const payBill = useCallback((billId) => {
+    setCurrentBillId(billId);
+    setScreen("payment-confirm");
+  }, []);
+
+  // For a category with no specific bill in hand yet (e.g. tapping a Services grid
+  // icon) — reuses the first unpaid bill of that category, or creates an ad-hoc one.
   const startPaymentFor = useCallback((category) => {
     setBills((prev) => {
-      const existing = prev.find((b) => b.category === category);
+      const existing = prev.find((b) => b.category === category && b.status !== "paid");
       if (existing) {
         setCurrentBillId(existing.id);
         return prev;
@@ -151,6 +157,7 @@ export function AppStateProvider({ children }) {
     categoryFor,
     lastPayment,
     pendingCount,
+    payBill,
     startPaymentFor,
     completePayment,
   };

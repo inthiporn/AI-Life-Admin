@@ -217,9 +217,11 @@ Doc ID = slug ที่อ่านง่าย เช่น `electricity`, `wat
 | reference_number | string \| null | |
 | amount | number | หน่วย THB |
 | due_date | timestamp | |
-| status | string | `pending` \| `paid` \| `overdue` \| `cancelled` |
+| status | string | `pending` \| `processing` \| `paid` \| `overdue` \| `cancelled` \| `appointment` |
 | created_at | timestamp | |
 | updated_at | timestamp | |
+
+`appointment` คือรายการเตือนความจำที่ไม่มีการชำระเงิน (เช่น นัดตรวจสุขภาพ) — `amount` เป็น 0 และไม่ถูกนับเป็นบิลที่ต้อง claim/charge ในระบบชำระเงิน หรือถูก flag เป็น overdue โดย Cloud Scheduler
 
 Composite indexes: `(user_id ASC, status ASC, due_date ASC)`, `(status ASC, due_date ASC)` — สำหรับ Cloud Scheduler ไล่เช็คบิลเกินกำหนดของทุกผู้ใช้
 
