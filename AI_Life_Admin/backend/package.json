@@ -15,7 +15,8 @@
     "logs": "firebase functions:log",
     "lint": "eslint --ext .ts src",
     "test": "jest",
-    "seed:service-categories": "ts-node --transpile-only scripts/seedServiceCategories.ts"
+    "seed:service-categories": "ts-node --transpile-only scripts/seedServiceCategories.ts",
+    "seed:demo-bills": "ts-node --transpile-only scripts/seedDemoBills.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

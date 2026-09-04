@@ -2,7 +2,7 @@
 
 Implements the API surface described in [`docs/tech-spec.md`](../../docs/tech-spec.md) §3.2, against the Firestore schema in [`docs/database-schema.md`](../../docs/database-schema.md).
 
-> **Node.js is not installed on the machine this was scaffolded on**, so these files have not been compiled or run yet. Install Node 20 LTS, then follow the steps below.
+> Verified with Node 20+: `npm install`, `npm run build`, and `npm test` all pass, and both seed scripts have been run against the real `ai-life-admin-8f715` project.
 
 ## Why this isn't a plain Express app
 
@@ -50,13 +50,15 @@ cp .env.example .env            # fill in local values for the emulator, if need
 ## Seed data
 
 ```bash
-npm run seed:service-categories
+npm run seed:service-categories   # 5 category docs: electricity, water, tax, social, health_checkup
+npm run seed:demo-bills           # 2 sample bills for a fixed "demo-user"
 ```
 
-Writes the 5 `service_categories` documents (electricity, water, tax, social, health_checkup) via the Admin SDK — this bypasses `firestore.rules`, which intentionally blocks clients from writing this collection. Requires Google Cloud credentials for whichever project you're targeting:
+Both write via the Admin SDK — this bypasses `firestore.rules`, which intentionally blocks clients from writing these collections. `demo-user` is a placeholder: there's no real Firebase Auth user behind it yet, since the frontend's login/OTP screens are still mocked (see `../frontend/README.md`); reseed under a real uid once auth is wired up. Requires Google Cloud credentials for whichever project you're targeting:
 
 ```bash
 gcloud auth application-default login   # writes to the real ai-life-admin-8f715 project
+# — or, point GOOGLE_APPLICATION_CREDENTIALS at a downloaded service-account key —
 # — or, to seed the local emulator instead —
 firebase emulators:start                # in another terminal
 export FIRESTORE_EMULATOR_HOST=localhost:8080

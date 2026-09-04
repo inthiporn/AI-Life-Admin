@@ -37,5 +37,5 @@ See [`backend/README.md`](backend/README.md) and [`frontend/README.md`](frontend
 
 - **Docs** — tech spec, Firestore schema: done, see [`../docs`](../docs)
 - **Prototype** — clickable UX mockup of every screen: done, see [`prototype/`](prototype)
-- **Backend** — Cloud Functions for auth, document scan, payments, account deletion, overdue-bill job: implemented, not yet compiled/tested (no Node.js on the machine that scaffolded it) or connected to a real Payment Gateway / AI-OCR provider
-- **Frontend** — React/Vite app shell: skeleton only; porting the `prototype/` screens into real React pages has not started
+- **Backend** — Cloud Functions for auth, document scan, payments, account deletion, overdue-bill job: implemented, compiled and tested (`npm run build`, `npm test` both pass); `service_categories` and demo `bills` seeded into the real `ai-life-admin-8f715` Firestore project; not yet connected to a real Payment Gateway / AI-OCR provider, and Cloud Functions themselves aren't deployed yet
+- **Frontend** — all 24 screens ported from `prototype/` to React (`npm run dev` verified in-browser); Home and Services screens read live Firestore data (`bills`, `service_categories`); auth, payment processing, and account settings still use local mock state — wiring those to `backend/`'s Cloud Functions and real Firebase Authentication is the next milestone

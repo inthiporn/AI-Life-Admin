@@ -1,20 +1,46 @@
-import { useAuthContext } from "../context/AuthContext";
+import { formatTHB, useAppState } from "../state/AppStateContext";
+import BottomNav from "../components/BottomNav";
 
-/**
- * Placeholder landing page. The full set of screens (onboarding, home,
- * services, document scan, payment) is designed in ../../prototype/ as a
- * static HTML/JS clickable mockup — porting each screen into a React page
- * here is the next step.
- */
 export default function HomePage() {
-  const { user, isLoading } = useAuthContext();
-
-  if (isLoading) return <p>กำลังโหลด...</p>;
+  const { bills, categoryFor, pendingCount, startPaymentFor, navigate } = useAppState();
 
   return (
-    <main style={{ fontFamily: "sans-serif", padding: 24 }}>
-      <h1>AI Life Admin</h1>
-      <p>{user ? `สวัสดีค่ะ ${user.email ?? user.phoneNumber}` : "กรุณาเข้าสู่ระบบ"}</p>
-    </main>
+    <section className="screen">
+      <div className="home-header">
+        <div>
+          <p className="muted">สวัสดีค่ะ 👋</p>
+          <h3>คุณเปิ้ล มีเรื่องต้องจัดการ {pendingCount} เรื่อง</h3>
+        </div>
+        <button className="icon-btn" onClick={() => navigate("notification-settings")}>
+          🔔
+        </button>
+      </div>
+      <div className="bill-list">
+        {bills.map((bill) => {
+          const cat = categoryFor(bill.category);
+          return (
+            <button
+              key={bill.id}
+              className={"bill-card" + (bill.status === "paid" ? " paid" : "")}
+              onClick={() => bill.status === "pending" && startPaymentFor(bill.category)}
+            >
+              <span className="bill-icon">{cat.icon}</span>
+              <span className="bill-info">
+                <span className="bill-name">{cat.name}</span>
+                <br />
+                <span className="bill-due">
+                  {bill.status === "paid" ? "ชำระแล้ว" : bill.status === "appointment" ? "นัดหมาย " + bill.due : "ครบกำหนด " + bill.due}
+                </span>
+              </span>
+              <span className="bill-amount">{bill.amount > 0 ? formatTHB(bill.amount) + " บ." : ""}</span>
+            </button>
+          );
+        })}
+      </div>
+      <button className="btn-secondary" onClick={() => navigate("services")}>
+        + เพิ่มธุระใหม่
+      </button>
+      <BottomNav active="home" />
+    </section>
   );
 }
