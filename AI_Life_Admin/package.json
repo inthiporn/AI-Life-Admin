@@ -1,0 +1,17 @@
+{
+  "name": "ai-life-admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Life Admin — monorepo workspace (backend + frontend)",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "backend:build": "npm run build --workspace=backend",
+    "backend:serve": "npm run serve --workspace=backend",
+    "backend:test": "npm test --workspace=backend",
+    "frontend:dev": "npm run dev --workspace=frontend",
+    "frontend:build": "npm run build --workspace=frontend"
+  }
+}
